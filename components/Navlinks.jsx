@@ -1,5 +1,5 @@
 // components/Navlinks.js
-'use client'
+"use client"
 import React, { useState } from "react";
 import { Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
