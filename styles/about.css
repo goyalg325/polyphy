@@ -1,0 +1,473 @@
+.about {
+  padding: 4rem 2rem;
+  padding-top: 0;
+  max-width: 1000px;
+  margin: auto;
+}
+.about h1 {
+  text-decoration-color: rgba(55, 1, 112, 0.7);
+}
+
+.publications-wrapper {
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
+  max-width: 1200px;
+  margin: auto;
+}
+.publications-wrapper h1 {
+  text-decoration-color: rgba(55, 1, 112, 0.7);
+}
+
+.publication_card_small h2,
+.publication_card_large h2 {
+  font-family: "Bitter", serif;
+  padding: 0 1rem;
+  padding-top: 1rem;
+  color: #f2f2f2;
+  line-height: 1.5rem;
+  font-size: 14px;
+  font-weight: lighter;
+}
+@media only screen and (max-width : 550px) {
+  .publication_card_small h2,
+  .publication_card_large h2 {
+    font-size: 13px;
+  }
+}
+.publication_card_small .brief,
+.publication_card_large .brief {
+  font-size: 12px;
+  opacity: 0.9;
+  padding: 1rem;
+}
+@media only screen and (max-width : 550px) {
+  .publication_card_small .brief,
+  .publication_card_large .brief {
+    font-size: 11px;
+  }
+}
+.publication_card_small i,
+.publication_card_large i {
+  font-size: 12px;
+  opacity: 0.7;
+}
+@media only screen and (max-width : 550px) {
+  .publication_card_small i,
+  .publication_card_large i {
+    font-size: 11px;
+  }
+}
+.publication_card_small img,
+.publication_card_large img {
+  height: auto;
+  width: 100%;
+  transform: translateY(4px);
+  border-radius: 0 0 4px 4px;
+}
+
+.publication-route-wrapper,
+.team-route-wrapper {
+  max-width: 1300px;
+  margin: auto;
+  padding: 2rem;
+  min-height: 60vh;
+}
+.publication-route-wrapper .detail-button,
+.team-route-wrapper .detail-button {
+  margin: 1rem;
+  margin-top: 0.3rem;
+  padding: 0.3rem 1.5rem;
+  border: 1.5px solid rgba(255, 123, 0, 0.886);
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 50px;
+  font-size: 14px;
+  transition: 0.2s ease-in-out;
+}
+@media only screen and (max-width : 550px) {
+  .publication-route-wrapper .detail-button,
+  .team-route-wrapper .detail-button {
+    font-size: 12px;
+  }
+}
+.publication-route-wrapper .detail-button:hover,
+.team-route-wrapper .detail-button:hover {
+  background-color: rgba(255, 123, 0, 0.886);
+  transform: scale(0.95);
+}
+.publication-route-wrapper .creative-card,
+.team-route-wrapper .creative-card {
+  background-color: rgba(0, 0, 0, 0.664);
+  background-position: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+  margin: auto;
+  border-radius: 100%;
+  text-align: center;
+  border: 1px solid grey;
+}
+.publication-route-wrapper .creative-card img,
+.team-route-wrapper .creative-card img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.publication-route-wrapper .creative-card .content,
+.team-route-wrapper .creative-card .content {
+  padding: 1rem;
+  height: 300px;
+  width: 300px;
+  transform: translateY(-300px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 50%;
+}
+.publication-route-wrapper .creative-card h2,
+.team-route-wrapper .creative-card h2 {
+  font-family: "Bitter", serif;
+  color: white;
+  line-height: 1.5rem;
+  letter-spacing: 1px;
+  font-size: 20px;
+}
+@media only screen and (max-width : 550px) {
+  .publication-route-wrapper .creative-card h2,
+  .team-route-wrapper .creative-card h2 {
+    font-size: 17px;
+  }
+}
+.publication-route-wrapper .creative-card p,
+.team-route-wrapper .creative-card p {
+  margin: 7px 0 20px 0;
+  line-height: 1rem;
+}
+.publication-route-wrapper .creative-card i,
+.team-route-wrapper .creative-card i {
+  line-height: 1rem;
+  color: #e6e6e6;
+  font-size: 12px;
+}
+@media only screen and (max-width : 550px) {
+  .publication-route-wrapper .creative-card i,
+  .team-route-wrapper .creative-card i {
+    font-size: 10px;
+  }
+}
+.publication-route-wrapper .creative-card:hover,
+.team-route-wrapper .creative-card:hover {
+  border: 1px solid rgb(255, 255, 255);
+}
+.publication-route-wrapper .creative-card:hover > img,
+.team-route-wrapper .creative-card:hover > img {
+  opacity: 0.7;
+}
+
+.story-route-wrapper {
+  padding: 2rem;
+}
+.story-route-wrapper h2 {
+  font-family: "Bitter", serif;
+  color: #f2f2f2;
+  line-height: 1.5rem;
+  font-size: 30px;
+  font-weight: lighter;
+  letter-spacing: 1.3px;
+  margin-bottom: 1rem;
+}
+@media only screen and (max-width : 550px) {
+  .story-route-wrapper h2 {
+    font-size: 20px;
+  }
+}
+.story-route-wrapper img {
+  width: 100%;
+}
+.story-route-wrapper li {
+  margin-left: 3rem;
+}
+.story-route-wrapper li i {
+  line-height: 1.5rem;
+  color: #e6e6e6;
+  font-size: 14px;
+}
+@media only screen and (max-width : 550px) {
+  .story-route-wrapper li i {
+    font-size: 13px;
+  }
+}
+.story-route-wrapper .section2,
+.story-route-wrapper .section3,
+.story-route-wrapper .section4 {
+  background-color: rgba(232, 117, 2, 0.401);
+  padding: 2rem;
+  margin: 4rem auto;
+  border-radius: 10px;
+  max-width: 1300px;
+}
+@media only screen and (max-width : 550px) {
+  .story-route-wrapper .section2,
+  .story-route-wrapper .section3,
+  .story-route-wrapper .section4 {
+    padding: 1rem;
+  }
+}
+.story-route-wrapper .section2 img,
+.story-route-wrapper .section3 img,
+.story-route-wrapper .section4 img {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+}
+.story-route-wrapper .section3 {
+  margin: 0.5rem auto;
+}
+.story-route-wrapper .section4 {
+  background-color: transparent;
+  border: 1px solid #ff8400;
+  margin: 0.5rem auto;
+}
+
+.publication_card_large .image-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  background-color: black;
+  padding: 0.5rem;
+}
+.publication_card_large img {
+  height: auto;
+  width: 100%;
+  vertical-align: middle;
+  transform: translateY(4px);
+  border-radius: 0 0 4px 4px;
+}
+
+.news-wrapper {
+  background-color: rgba(33, 33, 33, 0.621);
+  padding: 1rem;
+  position: relative;
+  transform: translateY(-80px);
+  max-width: calc(1000px - 4rem);
+  margin: auto;
+}
+@media only screen and (max-width : 756px) {
+  .news-wrapper {
+    transform: translateY(-20px);
+    margin: 4rem auto;
+  }
+}
+.news-wrapper h2 {
+  font-family: "Bitter", serif;
+  color: #f2f2f2;
+  line-height: 1.5rem;
+  font-size: 20px;
+  font-weight: lighter;
+  letter-spacing: 1.3px;
+}
+@media only screen and (max-width : 550px) {
+  .news-wrapper h2 {
+    font-size: 15px;
+  }
+}
+.news-wrapper .tweet {
+  border-bottom: 1px solid grey;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+}
+.news-wrapper .tweet span {
+  color: rgb(167, 161, 161);
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 15px;
+}
+
+.team-route-wrapper h2 {
+  font-family: "Bitter", serif;
+  color: #f2f2f2;
+  line-height: 1.5rem;
+  font-size: 30px;
+  text-align: center;
+  font-weight: lighter;
+  letter-spacing: 1.3px;
+  margin-bottom: 2rem;
+}
+@media only screen and (max-width : 550px) {
+  .team-route-wrapper h2 {
+    font-size: 25px;
+  }
+}
+.team-route-wrapper svg {
+  margin: 0 8px;
+}
+.team-route-wrapper svg,
+.team-route-wrapper path {
+  color: rgb(199, 197, 197) !important;
+}
+.team-route-wrapper svg:hover,
+.team-route-wrapper path:hover {
+  color: rgb(255, 166, 0) !important;
+}
+.team-route-wrapper .sig-contri {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(124, 62, 0, 0.707);
+  margin-bottom: 1rem;
+}
+
+.team-card {
+  padding: 1.5rem;
+  background: rgba(86, 86, 86, 0.326);
+  border-radius: 5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+.team-card img {
+  height: 120px;
+  width: 120px;
+  -webkit-clip-path: circle();
+          clip-path: circle();
+  margin-right: 1.5rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+@media only screen and (max-width : 550px) {
+  .team-card img {
+    height: 90px;
+    width: 90px;
+  }
+}
+.team-card .team-content h3 {
+  font-family: "Bitter", serif;
+  color: #f2f2f2;
+  line-height: 1.5rem;
+  font-size: 20px;
+  font-weight: lighter;
+  letter-spacing: 1.3px;
+  text-shadow: 1px 1px 0px #ff8400;
+}
+@media only screen and (max-width : 550px) {
+  .team-card .team-content h3 {
+    font-size: 15px;
+  }
+}
+.team-card .team-content p {
+  font-size: 12px;
+  line-height: 1.2rem;
+  margin: 10px 0;
+}
+@media only screen and (max-width : 550px) {
+  .team-card .team-content p {
+    margin: 5px 0;
+  }
+}
+.team-card .team-content svg {
+  margin: 0;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+.team-card .team-content svg,
+.team-card .team-content path {
+  color: rgb(255, 255, 255) !important;
+}
+.team-card .team-content svg:hover,
+.team-card .team-content path:hover {
+  color: rgb(255, 166, 0) !important;
+}
+
+.github-contributor-wrapper {
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.github-contributor {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-left: 0.2px solid #ff8400;
+  border-right: 0.2px solid #ff8400;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 10px 0;
+}
+.github-contributor img {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+  background-color: grey;
+}
+@media only screen and (max-width : 550px) {
+  .github-contributor img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.errorpage {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 2rem;
+}
+.errorpage h3 {
+  font-size: 80px;
+  line-height: 120px;
+}
+@media only screen and (max-width : 756px) {
+  .errorpage h3 {
+    font-size: 40px;
+    line-height: 60px;
+  }
+}
+.errorpage h4 {
+  font-weight: lighter;
+  font-size: 30px;
+}
+@media only screen and (max-width : 756px) {
+  .errorpage h4 {
+    font-size: 15px;
+  }
+}
+
+.opportunities-content {
+  margin: 2rem 0;
+  min-height: 100vh;
+}
+.opportunities-content h3 {
+  font-weight: lighter;
+  text-transform: capitalize;
+  font-family: "Bitter", serif;
+}
+.opportunities-content a {
+  font-size: 13px;
+  color: #ff8400;
+  text-align: right;
+  margin-top: 10px;
+}
+.opportunities-content a::hover {
+  text-decoration: underline;
+}
+@media only screen and (max-width : 550px) {
+  .opportunities-content {
+    margin: 1rem 0;
+  }
+}/*# sourceMappingURL=about.css.map */
