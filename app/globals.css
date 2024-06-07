@@ -5,6 +5,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bitter:wght@300&display=swap");
 
+@font-face {
+  font-family: 'Raleway';
+  src: url('../public/fonts/Bitter,Raleway/Raleway/Raleway-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bitter';
+  src: url('../public/fonts/Bitter,Raleway/Bitter/Bitter-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 700;
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;

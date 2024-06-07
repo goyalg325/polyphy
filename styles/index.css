@@ -1,5 +1,5 @@
 .hero {
-  position: relative;
+  position: absolute;
   padding: 4rem 2rem;
   max-width: 1500px;
   margin: auto;
