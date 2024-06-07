@@ -1,10 +1,7 @@
 'use client'
 import React, { useState } from "react";
 import { Grid, Link } from "@mui/material";
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import videoPoster from "@/public/video_poster.png";
-// import '@/styles/index.scss';
 
 const Hero = ({ data }) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -56,14 +53,7 @@ const Hero = ({ data }) => {
           <Grid item xs={12} sm={12} md={6}>
             <div style={{ maxWidth: "600px" }}>
               {!isVideoLoaded && (
-                 <Image
-                 src={videoPoster}
-                 alt="Video placeholder"
-                 fill
-                 priority
-                 sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                 style={{ objectFit: 'cover' }}
-               />
+                <div style={{ width: '100%', height: 'auto', backgroundColor: 'black' }}></div>
               )}
               <DynamicVideo />
             </div>

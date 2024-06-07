@@ -1,7 +1,6 @@
 import React from 'react';
 import video from "../public/hero-video.webm";
-// import '@/styles/index.scss';
-import videoPoster from "@/public/video_poster.png"
+
 export const VideoComponent = () => (
   <video
     className= "video"
@@ -11,7 +10,6 @@ export const VideoComponent = () => (
     autoPlay
     loop
     muted
-    poster={videoPoster}
   >
     <p>
       Your browser doesn't support HTML5 video. Here is a{" "}
