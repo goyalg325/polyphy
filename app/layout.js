@@ -4,6 +4,7 @@ import '@/styles/index.scss'
 import {  ThemeProvider } from "@mui/material/styles";
 import {theme} from "@/utils/theme"
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
      <div className="App">
        <Navbar/>
     {children}
+     <Footer/>
      </div>
      </ThemeProvider>
      </body>
