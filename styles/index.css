@@ -1,5 +1,5 @@
 .hero {
-  position: absolute;
+  position: relative;
   padding: 4rem 2rem;
   max-width: 1500px;
   margin: auto;
@@ -374,7 +374,7 @@
   background-color: rgba(33, 33, 33, 0.621);
   padding: 1rem;
   position: relative;
-  transform: translateY(-80px);
+  transform: translateY(-40px);
   max-width: calc(1000px - 4rem);
   margin: auto;
 }

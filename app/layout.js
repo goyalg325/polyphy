@@ -15,11 +15,20 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
 <html lang="en">
+<head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.quilljs.com/1.3.6/quill.snow.css" 
+        />
+      </head>
      <body className={inter.className}>
      <ThemeProvider theme={theme}> 
-     <div className="App">
+     <div className="App flex flex-col min-h-screen"> {/* min-h-screen: Ensures the element takes at least the full height of the viewport.
+flex and flex-col: Makes the parent container a flexbox and arranges children in a column. */}
        <Navbar/>
+       <div className="flex-1"> {/* flex-1: Makes the main content area grow to fill the available space. */}
     {children}
+    </div>
      <Footer/>
      </div>
      </ThemeProvider>

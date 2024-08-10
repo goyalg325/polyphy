@@ -118,3 +118,5 @@ body::-webkit-scrollbar-thumb:hover {
     url(../public/stars.png) repeat top
     center;
 }
+/* Add this to your global CSS file or a specific CSS module */
+

@@ -1,0 +1,79 @@
+.frame {
+    width: 90%;
+    margin: 40px auto;
+    text-align: center;
+  }
+  
+  .button {
+    margin-left: auto;
+    margin-right: auto;
+    
+  }
+  
+  .customBtn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    font-family: inherit; /* Use the page's existing fonts */
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px #f52435,
+                7px 7px 20px 0px rgba(0, 0, 0, 0.1),
+                4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: color 0.3s ease;
+  }
+  
+  .btn10 {
+    background: #000;
+    color: #fff;
+    font-weight: 800;
+    border: none;
+    overflow: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .btn10::after {
+    position: absolute;
+    content: " ";
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+    transform: scale(0.1);
+  }
+  
+  .btn10:hover {
+    color: #020101;
+    background: transparent;
+  }
+  
+  .btn10:hover::after {
+    background: #f52435;
+    transform: scale(1);
+  }
+  
+  /* Fallback for browsers that do not support '::after' */
+  .btn10:hover {
+    background: #f52435;;
+  }
+  
+  .btn10.loading {
+    box-shadow: none ;
+    background-color: #f2f3f2cf; 
+     color: black;
+    cursor: not-allowed; /* Change cursor to indicate disabled */
+  }
+  
+  .btn10.loading::after {
+    background: transparent; /* Stop the hover effect */
+  }
