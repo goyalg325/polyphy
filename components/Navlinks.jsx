@@ -2,17 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import axios from 'axios';
+import categories from '@/categories'; // Import the categories array
 
 const Navlinks = ({ dir, sp, setOpen }) => {
   const mobile = useMediaQuery("(max-width:768px)");
   const [open, setOpenDialog] = useState(false);
-  const [categories, setCategories] = useState({
-    Research: [],
-    Creatives: [],
-    Tutorials: [],
-    Usecases: [],
-    Miscellaneous: []
-  });
+  const [categoriesState, setCategoriesState] = useState({});
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -25,18 +20,16 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   useEffect(() => {
     const fetchPages = async () => {
       try {
-        const response = await axios.get(`api/page-by-category`);
+        const response = await axios.get('api/page-by-category');
         const pages = response.data.data;
 
-        const categorizedPages = {
-          Research: pages.filter(page => page.category === 'Research'),
-          Creatives: pages.filter(page => page.category === 'Creatives'),
-          Tutorials: pages.filter(page => page.category === 'Tutorials'),
-          Usecases: pages.filter(page => page.category === 'Usecases'),
-          Miscellaneous: pages.filter(page => page.category === 'Miscellaneous'),
-        };
+        // Dynamically create categorized pages
+        const categorizedPages = categories.reduce((acc, category) => {
+          acc[category] = pages.filter(page => page.category === category);
+          return acc;
+        }, {});
 
-        setCategories(categorizedPages);
+        setCategoriesState(categorizedPages);
       } catch (error) {
         console.error('Error fetching pages:', error);
       }
@@ -68,11 +61,11 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         </a>
       </li>
 
-      {Object.keys(categories).map((category) => (
+      {Object.keys(categoriesState).map((category) => (
         <li className="dropdown-wrapper" key={category}>
           <p className="navLinksMain">{category}</p>
           <ul className="dropdown">
-            {categories[category].map((page) => (
+            {categoriesState[category].map((page) => (
               <li key={page.title} className="w-full">
                 <a
                   className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"
