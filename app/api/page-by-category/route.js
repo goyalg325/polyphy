@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pages`, {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api//pagesByCategory`, {
       headers: {
         'Content-Type': 'application/json',
       },
