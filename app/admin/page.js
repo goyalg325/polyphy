@@ -12,6 +12,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import CreateUser from '@/components/CreateUser';
 import ManageUsers from '@/components/ManageUsers';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import categories from '@/categories'
 
 const QuillEditor = dynamic(() => import('./QuillEditor'), { ssr: false });
 
@@ -209,57 +210,23 @@ const AdminPanel = () => {
     </span>
   </div>
   {isCategoryDropdownOpen && (
-    <ul className="absolute z-10 bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-      <li
-        className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
-        onClick={() => {
-          setCategory("Research");
-          setIsCategoryDropdownOpen(false);
-        }}
-      >
-       Research
-      </li>
-      <li
-        className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
-        onClick={() => {
-          setCategory("Creatives");
-          setIsCategoryDropdownOpen(false);
-        }}
-      >
-        Creatives
-      </li>
-      <li
-        className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
-        onClick={() => {
-          setCategory("Tutorials");
-          setIsCategoryDropdownOpen(false);
-        }}
-      >
-        Tutorials
-      </li>
-      <li
-        className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
-        onClick={() => {
-          setCategory("Usecases");
-          setIsCategoryDropdownOpen(false);
-        }}
-      >
-        Usecases
-      </li>
-      <li
-        className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
-        onClick={() => {
-          setCategory("Miscellaneous");
-          setIsCategoryDropdownOpen(false);
-        }}
-      >
-        Miscellaneous
-      </li>
-    </ul>
-  )}
+          <ul className="absolute z-10 bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            {categories.map((cat, index) => (
+              <li
+                key={index}
+                className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
+                onClick={() => {
+                  setCategory(cat);
+                  setIsCategoryDropdownOpen(false);
+                }}
+              >
+                {cat}
+              </li>
+            ))}
+          </ul>
+        )}
 </div>
-
-          </div>
+    </div>
           <div className="md:hidden m-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
