@@ -52,9 +52,9 @@ export async function POST(req) {
       }
   
       // Call the backend to delete the category
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
-        data: { category: body.category }
-      });
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, 
+     { category: body.category }
+      );
   
       return new Response(JSON.stringify(response.data), {
         status: response.status,

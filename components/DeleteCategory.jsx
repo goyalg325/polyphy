@@ -40,7 +40,7 @@ const DeleteCategory = () => {
           }
     
           // Call the delete-category API
-          await axios.delete('/api/categories', { data: { category: selectedCategory } });
+          await axios.delete('/api/categories', { category: selectedCategory } );
     
           // Update the local state
           alert(`Category ${selectedCategory} and its pages have been deleted successfully.`);
