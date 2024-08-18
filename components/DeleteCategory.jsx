@@ -6,7 +6,6 @@ const DeleteCategory = () => {
   const [categoriesList, setCategoriesList] = useState([]);
 
   useEffect(() => {
-    // Fetch categories from API on component mount
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/categories');
@@ -36,11 +35,11 @@ const DeleteCategory = () => {
           }
 
           // Call the delete-category API
-          console.log('Request payload:',{ data : { category: selectedCategory }});
-
           await axios.delete('/api/categories', { data: { category: selectedCategory } });
 
           // Update the local state
+          setCategoriesList(categoriesList.filter(cat => cat !== selectedCategory));
+          setSelectedCategory('');
           alert(`Category ${selectedCategory} and its pages have been deleted successfully.`);
         } else {
           console.error('Unexpected data format:', pages);
@@ -75,7 +74,8 @@ const DeleteCategory = () => {
       <div className='flex justify-center'>
         <button
           onClick={handleDelete}
-          className='focus:outline-none text-white bg-red-400 hover:bg-red-500 focus:ring-1 focus:ring-red-300 w-full px-3 md:w-auto lg:w-36 text-sm h-10 rounded-md flex items-center justify-center'
+          disabled={!selectedCategory}
+          className='focus:outline-none text-white bg-red-400 hover:bg-red-500 focus:ring-1 focus:ring-red-300 w-full px-3 md:w-auto lg:w-36 text-sm h-10 rounded-md flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed'
         >
           Delete Category
         </button>

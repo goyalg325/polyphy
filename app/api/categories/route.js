@@ -39,34 +39,38 @@ export async function POST(req) {
   }
   
 
-  export async function DELETE(req) {
-    try {
-      const body = await req.json(); // Extract JSON body
-      const { category } = body;
-  
-      // Make sure the body contains the category
-      if (!category) {
-        return new Response(JSON.stringify({ error: 'Category is required' }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
-      }
-  
-      // Call the backend to delete the category
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
-        headers: { 'Content-Type': 'application/json' },
-        data: { category } // Axios allows sending data in DELETE request
-      });
-  
-      return new Response(JSON.stringify(response.data), {
-        status: response.status,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    } catch (error) {
-      console.error('Error deleting category:', error);
-      return new Response(JSON.stringify({ error: 'Failed to delete category' }), {
-        status: 500,
+
+
+export async function DELETE(req) {
+  try {
+    const body = await req.json();
+    const { category } = body;
+
+    if (!category) {
+      return new Response(JSON.stringify({ error: 'Category is required' }), {
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
+
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
+      headers: { 'Content-Type': 'application/json' },
+      data: { category }
+    });
+
+    console.log('Raw response:', response.data);  // For debugging
+
+    return new Response(JSON.stringify(response.data), {
+      status: response.status,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    console.log('Error response:', error.response?.data);  // For debugging
+
+    return new Response(JSON.stringify({ error: 'Failed to delete category', details: error.message }), {
+      status: error.response?.status || 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
+}
