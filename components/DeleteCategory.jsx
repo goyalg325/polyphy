@@ -25,23 +25,19 @@ const DeleteCategory = () => {
       try {
         // Fetch pages in the selected category
         const response = await axios.get('/api/page-by-category');
-        console.log('API response:', response.data); // Log the response data
-    
-        // Access the pages array from response.data.data
         const pages = response.data.data;
-    
-        // Check if pages is an array
+
         if (Array.isArray(pages)) {
           const pagesToDelete = pages.filter(page => page.category === selectedCategory);
-    
+
           // Delete pages one by one
           for (const page of pagesToDelete) {
             await axios.delete(`/api/pages/${page.title}`);
           }
-    
+
           // Call the delete-category API
-          await axios.delete('/api/categories', { category: selectedCategory } );
-    
+          await axios.delete('/api/categories', { data: { category: selectedCategory } });
+
           // Update the local state
           alert(`Category ${selectedCategory} and its pages have been deleted successfully.`);
         } else {
@@ -54,7 +50,6 @@ const DeleteCategory = () => {
       }
     }
   };
-  
 
   return (
     <div className='w-full max-w-[250px] space-y-4 m-3'>

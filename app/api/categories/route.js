@@ -42,9 +42,10 @@ export async function POST(req) {
   export async function DELETE(req) {
     try {
       const body = await req.json(); // Extract JSON body
+      const { category } = body;
   
       // Make sure the body contains the category
-      if (!body.category) {
+      if (!category) {
         return new Response(JSON.stringify({ error: 'Category is required' }), {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
@@ -52,9 +53,10 @@ export async function POST(req) {
       }
   
       // Call the backend to delete the category
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, 
-     { category: body.category }
-      );
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
+        headers: { 'Content-Type': 'application/json' },
+        data: { category } // Axios allows sending data in DELETE request
+      });
   
       return new Response(JSON.stringify(response.data), {
         status: response.status,
