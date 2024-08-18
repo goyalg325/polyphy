@@ -14,10 +14,10 @@ export async function POST(request) {
     const token = request.cookies.get('token')?.value.split(' ')[1];
 
     if (!token) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const response = await axios.put(
+    await axios.put(
       `${BACKEND_URL}/api/update-category`,
       { title, category },
       {
@@ -27,12 +27,12 @@ export async function POST(request) {
       }
     );
 
-    return NextResponse.json({ message: 'Category updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Category updated successfully.' });
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      return NextResponse.json({ error: 'Page not found.' }, { status: 404 });
+      return NextResponse.json({ success: false, error: 'Page not found.' }, { status: 404 });
     } else {
-      return NextResponse.json({ error: 'An error occurred while updating the category.' }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'An error occurred while updating the category.' }, { status: 500 });
     }
   }
 }

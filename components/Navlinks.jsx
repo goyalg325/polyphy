@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
+import {
+  Stack,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 import { useMediaQuery } from "@mui/material";
-import axios from 'axios';
-import categories from '@/categories'; // Import the categories array
+import axios from "axios";
 
 const Navlinks = ({ dir, sp, setOpen }) => {
   const mobile = useMediaQuery("(max-width:768px)");
@@ -18,24 +25,29 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   };
 
   useEffect(() => {
-    const fetchPages = async () => {
+    const fetchCategoriesAndPages = async () => {
       try {
-        const response = await axios.get('api/page-by-category');
-        const pages = response.data.data;
+        // Fetch categories from the API
+        const categoriesResponse = await axios.get("/api/categories");
+        const categories = categoriesResponse.data;
+
+        // Fetch pages by category from the API
+        const pagesResponse = await axios.get("/api/page-by-category");
+        const pages = pagesResponse.data.data;
 
         // Dynamically create categorized pages
         const categorizedPages = categories.reduce((acc, category) => {
-          acc[category] = pages.filter(page => page.category === category);
+          acc[category] = pages.filter((page) => page.category === category);
           return acc;
         }, {});
 
         setCategoriesState(categorizedPages);
       } catch (error) {
-        console.error('Error fetching pages:', error);
+        console.error("Error fetching categories and pages:", error);
       }
     };
 
-    fetchPages();
+    fetchCategoriesAndPages();
   }, []);
 
   return (
@@ -97,7 +109,10 @@ const Navlinks = ({ dir, sp, setOpen }) => {
             <a className="dropdown-links">Slack</a>
           </li>
           <li>
-            <a className="dropdown-links" href="https://github.com/PolyPhyHub/PolyPhy/issues">
+            <a
+              className="dropdown-links"
+              href="https://github.com/PolyPhyHub/PolyPhy/issues"
+            >
               Discussions
             </a>
           </li>
