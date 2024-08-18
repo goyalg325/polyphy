@@ -36,6 +36,8 @@ const DeleteCategory = () => {
           }
 
           // Call the delete-category API
+          console.log('Request payload:',{ data : { category: selectedCategory }});
+
           await axios.delete('/api/categories', { data: { category: selectedCategory } });
 
           // Update the local state
