@@ -13,6 +13,9 @@ import CreateUser from '@/components/CreateUser';
 import ManageUsers from '@/components/ManageUsers';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import categories from '@/categories'
+import CreateCategory from '@/components/CreateCategory';
+import ChangePageCategory from '@/components/ChangePageCategory';
+import DeleteCategory from '@/components/DeleteCategory';
 
 const QuillEditor = dynamic(() => import('./QuillEditor'), { ssr: false });
 
@@ -31,6 +34,8 @@ const AdminPanel = () => {
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [userManagementOption, setUserManagementOption] = useState(null);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [showCategoryManagement, setShowCategoryManagement] = useState(false);
+  const [categoryManagementOption, setCategoryManagementOption] = useState(null);
  
   useEffect(() => {
     const fetchUser = async () => {
@@ -294,6 +299,57 @@ const AdminPanel = () => {
            
             
             )}
+
+<div className="m-2 relative">
+        <button
+          type="button"
+          onClick={() => {
+            if (showCategoryManagement || categoryManagementOption) {
+              setShowCategoryManagement(false); // Close dropdown
+              setCategoryManagementOption(null); // Close the opened component
+            } else {
+              setShowCategoryManagement(true); // Open dropdown
+            }
+          }}
+          className="focus:outline-none text-white bg-indigo-400 hover:bg-indigo-500 focus:ring-1 focus:ring-indigo-300 w-full px-3 md:w-auto lg:w-36 text-sm h-10 rounded-md flex items-center justify-center"
+        >
+          Manage Category
+          <ChevronDownIcon className={`h-5 w-5 ml-2 transition-transform ${showCategoryManagement ? 'transform rotate-180' : ''}`} />
+        </button>
+        {showCategoryManagement && (
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+            <button
+              onClick={() => {
+                setCategoryManagementOption('create');
+                setShowCategoryManagement(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              Create New Category
+            </button>
+            <button
+              onClick={() => {
+                setCategoryManagementOption('change');
+                setShowCategoryManagement(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              Change Page Category
+            </button>
+            <button
+              onClick={() => {
+                setCategoryManagementOption('delete');
+                setShowCategoryManagement(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              Delete Category
+            </button>
+          </div>
+        )}
+      </div>
+            
+
             <div className="mx-auto my-2 md:m-2">
               <LogoutButton loading={loading} onClick={handleLogout} className="w-full md:w-auto" />
             </div>
@@ -302,6 +358,10 @@ const AdminPanel = () => {
       </nav>
       {userManagementOption === 'create' && <CreateUser className = 'w-full'/>}
       {userManagementOption === 'manage' && <ManageUsers className="w-full" />}
+      {categoryManagementOption === 'create' && <CreateCategory className="w-full" />}
+      {categoryManagementOption === 'change' && <ChangePageCategory className="w-full" />}
+      {categoryManagementOption === 'delete' && <DeleteCategory className="w-full" />}
+
 
       <form onSubmit={handleSubmit} className="max-w-full w-screen">
 

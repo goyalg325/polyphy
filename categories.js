@@ -1,4 +1,9 @@
-// categories.js
-const categories = ['Research', 'Creatives', 'Tutorials', 'Usecases', 'Miscellaneous'];
+const categories = [
+  "Research",
+  "Creatives",
+  "Usecases",
+  "Miscellaneous",
+  "Tutorials"
+];
 
 export default categories;
