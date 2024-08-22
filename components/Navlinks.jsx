@@ -16,7 +16,8 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [categories, setCategories] = useState([]);
   const [pagesByCategory, setPagesByCategory] = useState({});
-  const [categorizedPages,setCategorizedPages] = useState({});
+  const [categorizedPages, setCategorizedPages] = useState({});
+
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
@@ -25,46 +26,49 @@ const Navlinks = ({ dir, sp, setOpen }) => {
     setOpenDialog(false);
   };
 
-useEffect(() => {
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("/api/categories");
-      console.log("Fetched categories:", response.data);
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("/api/categories");
+        console.log("Fetched categories:", response.data);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchPagesByCategory = async () => {
+      try {
+        const response = await axios.get("/api/page-by-category");
+        console.log("Fetched pages by category:", response.data.data);
+        setPagesByCategory(response.data.data);
+      } catch (error) {
+        console.error("Error fetching pages by category:", error);
+      }
+    };
+    fetchPagesByCategory();
+  }, []);
+
+  useEffect(() => {
+    if (categories.length > 0 && Object.keys(pagesByCategory).length > 0) {
+      const filteredPages = categories.reduce((acc, category) => {
+        acc[category] = pagesByCategory.filter(
+          (page) => page.category === category
+        );
+        return acc;
+      }, {});
+      setCategorizedPages(filteredPages);
     }
-  };
-  fetchCategories();
-},[]) ;
-
- useEffect(() => {
-  const fetchPagesByCategory = async () => {
-    try {
-      const response = await axios.get("/api/page-by-category");
-      console.log("Fetched pages by category:", response.data.data);
-      setPagesByCategory(response.data.data);
-    } catch (error) {
-      console.error("Error fetching pages by category:", error);
-    }
-  };
-  fetchPagesByCategory() ;
- },[])
-
- const filterPages = categories.reduce((acc, category) => {
-  acc[category] = pagesByCategory.filter((page) => page.category === category);
-  console.log(`Pages for category ${category}:`, acc[category]);
-  return acc;
-}, {});
-
-setCategorizedPages(filterPages); 
+  }, [categories, pagesByCategory]);
 
   return (
     <Stack
       direction={dir}
       spacing={sp}
       alignItems={!mobile ? "center" : "left"}
-     
     >
       <li>
         <a className="navLinksMain" href={`/`}>
@@ -87,11 +91,11 @@ setCategorizedPages(filterPages);
         </a>
       </li>
 
-      {/* {categories.map((category) => (
+      {Object.keys(categorizedPages).map((category) => (
         <li className="dropdown-wrapper" key={category}>
           <p className="navLinksMain">{category}</p>
           <ul className="dropdown">
-            {pagesByCategory[category]?.map((page) => (
+            {categorizedPages[category]?.map((page) => (
               <li key={page.title} className="w-full">
                 <a
                   className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"
@@ -101,22 +105,7 @@ setCategorizedPages(filterPages);
                   {page.title}
                 </a>
               </li>
-            ))} */}
-                 {Object.keys(categorizedPages).map((category) => (
-        <li className="dropdown-wrapper" key={category}>
-          <p className="navLinksMain">{category}</p>
-          <ul className="dropdown">
-            {CategorizedPages[category].map((page) => (
-              <li key={page.title} className="w-full">
-                <a
-                  className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"
-                  href={`/${page.title}`}
-                  onClick={() => setOpen && setOpen(false)} // Close drawer on mobile when link is clicked
-                >
-                  {page.title}
-                </a>
-              </li>
-            ))} 
+            ))}
           </ul>
         </li>
       ))}
