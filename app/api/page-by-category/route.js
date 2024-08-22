@@ -3,12 +3,12 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api//pagesByCategory`, {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pagesByCategory`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
+    console.log("Response from backend:", response.data);
     return NextResponse.json({ success: true, data: response.data });
   } catch (error) {
     console.error('Error fetching pages:', error);

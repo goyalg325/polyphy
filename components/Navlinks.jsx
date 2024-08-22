@@ -27,21 +27,19 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   useEffect(() => {
     const fetchCategoriesAndPages = async () => {
       try {
-        // Fetch categories from the API
         const categoriesResponse = await axios.get("/api/categories");
         const categories = categoriesResponse.data;
-
-        // Fetch pages by category from the API
-        const pagesResponse = await axios.get("/api/page-by-category");
-        // console.log(`ye have api response ${pagesResponse.data}`)
-        const pages = pagesResponse.data.data;
-
-        // Dynamically create categorized pages
+    
+        const pagesResponse = await axios.get(`/api/page-by-category`);
+        const pages = pagesResponse.data;
+        console.log("Pages:", pages);
+    
         const categorizedPages = categories.reduce((acc, category) => {
           acc[category] = pages.filter((page) => page.category === category);
+          console.log(`Pages for category ${category}:`, acc[category]);
           return acc;
         }, {});
-
+    
         setCategoriesState(categorizedPages);
       } catch (error) {
         console.error("Error fetching categories and pages:", error);
