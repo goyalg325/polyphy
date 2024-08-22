@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, { useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import dynamic from 'next/dynamic';
@@ -12,14 +12,14 @@ const Navlinks = dynamic(() => import('./Navlinks'), {
   loading: () => <p>Loading...</p>,
 });
 
-const Navbar = ({ categories, pagesByCategory }) => {
+const Navbar = () => {
   const mobile = useMediaQuery("(max-width:768px)");
   const [open, setOpen] = useState(false);
 
   return (
     <div className="navbar bg-black">
       {!mobile ? (
-        <Navlinks dir="row" sp={4} categories={categories} pagesByCategory={pagesByCategory} />
+        <Navlinks dir="row" sp={4} />
       ) : !open ? (
         <IconButton onClick={() => setOpen(true)}>
           <MenuIcon />
@@ -29,22 +29,24 @@ const Navbar = ({ categories, pagesByCategory }) => {
           <CloseIcon />
         </IconButton>
       )}
-      <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{
-            padding: "0.5rem 3rem",
-            width: "100%", 
-            height: "100vh", 
-            backgroundColor: "black",
-            marginTop: mobile ? "1rem" : "0",
-            overflowY: "auto",
-          }}
-        >
-          <div className="navbar">
-            <Navlinks dir="column" sp={4} setOpen={setOpen} categories={categories} pagesByCategory={pagesByCategory} />
-          </div>
-        </Box>
-      </Drawer>
+<Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
+  <Box
+    sx={{
+      padding: "0.5rem 3rem",
+      width: "100%", // Adjusted drawer width for mobile view
+      height: "100vh", // Set height to full viewport height
+      backgroundColor: "black",
+      marginTop: mobile ? "1rem" : "0",
+      overflowY: "auto", // Make the drawer scrollable when content exceeds height
+    }}
+  >
+    <div className="navbar">
+      <Navlinks dir="column" sp={4} setOpen={setOpen} />
+    </div>
+  </Box>
+</Drawer>
+
+
     </div>
   );
 };
