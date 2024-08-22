@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function ManageUsers({ className }) {
@@ -30,6 +30,24 @@ export default function ManageUsers({ className }) {
     }
   }
 
+  async function handleUpdateRole(username, currentRole) {
+    const newRole = currentRole === 'Admin' ? 'Editor' : 'Admin';
+
+    try {
+      const response = await axios.put('/api/update-userRole', { username, role: newRole });
+      if (response.data.status === 200) {
+        // Update the user's role in the local state
+        setUsers(users.map(user =>
+          user.username === username ? { ...user, role: newRole } : user
+        ));
+      } else {
+        setError(response.data.error || 'Error updating role');
+      }
+    } catch (err) {
+      setError('Error updating role');
+    }
+  }
+
   if (loading) return <p>Loading users...</p>;
   if (error) return <p>{error}</p>;
 
@@ -50,8 +68,14 @@ export default function ManageUsers({ className }) {
                 <span className="text-sm text-white">({user.role})</span>
               </div>
               <button
+                onClick={() => handleUpdateRole(user.username, user.role)}
+                className="mt-4 lg:mt-0 focus:outline-none bg-rose-600 hover:bg-rose-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
+              >
+                Change to {user.role === 'Admin' ? 'Editor' : 'Admin'}
+              </button>
+              <button
                 onClick={() => deleteUser(user.username)}
-                className="mt-4 lg:mt-0 focus:outline-none bg-rose-600 hover:bg-rose-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md "
+                className="mt-4 lg:mt-0 focus:outline-none bg-rose-600 hover:bg-rose-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
               >
                 Delete
               </button>
