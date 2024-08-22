@@ -97,7 +97,10 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
     }
 
-    const response = await axios.put(`${BACKEND_URL}/api/users/${username}/role`, { role }, {
+    const response = await axios.put(`${BACKEND_URL}/api/update-user-role`, {
+      username,
+      role,
+    }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
