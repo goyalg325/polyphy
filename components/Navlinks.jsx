@@ -27,7 +27,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   useEffect(() => {
     const fetchCategoriesAndPages = async () => {
       try {
-        const pagesResponse = await axios.get(`/api/pagesByCategory?t=${Date.now()}`);
+        const pagesResponse = await axios.get(`/api/pagesByCategory`);
         const pages = pagesResponse.data.data;
 
 
