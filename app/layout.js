@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
             'Content-Type': 'application/json',
           },
         });;
-        setPagesByCategory(response.data.data);
+        setPagesByCategory(response.data);
       } catch (error) {
         console.error("Error fetching pages by category:", error);
       }
