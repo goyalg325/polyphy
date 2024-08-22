@@ -23,7 +23,8 @@ export default function ManageUsers({ className }) {
 
   async function deleteUser(username) {
     try {
-      await axios.delete(`/api/manage-users`, { data: { username } });
+      await axios.delete('/api/manage-users', { data: { username } });
+      // Update the local state by removing the deleted user
       setUsers(users.filter(user => user.username !== username));
     } catch (err) {
       setError('Error deleting user');
@@ -35,7 +36,7 @@ export default function ManageUsers({ className }) {
 
     try {
       const response = await axios.put('/api/manage-users', { username, role: newRole });
-      if (response.data.status === 200) {
+      if (response.status === 200) {
         // Update the user's role in the local state
         setUsers(users.map(user =>
           user.username === username ? { ...user, role: newRole } : user
