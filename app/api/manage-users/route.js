@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import axios from 'axios';
 
@@ -65,5 +65,47 @@ export async function DELETE(request) {
   } catch (error) {
     console.error('Error deleting user:', error);
     return NextResponse.json({ error: 'Error deleting user' }, { status: 500 });
+  }
+}
+
+export async function PUT(request) {
+  const cookieToken = request.cookies.get('token')?.value.split(' ')[1];
+  const headerToken = request.headers.get('Authorization')?.split(' ')[1];
+  const token = cookieToken || headerToken;
+
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    // Verify the JWT token
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
+    
+    // Check if the user is an admin
+    if (payload.role !== 'Admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const { username, role } = await request.json();
+
+    if (!username || !role) {
+      return NextResponse.json({ error: 'Username and role are required' }, { status: 400 });
+    }
+
+    // Check if the role is valid (Admin or Editor)
+    if (role !== 'Admin' && role !== 'Editor') {
+      return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
+    }
+
+    const response = await axios.put(`${BACKEND_URL}/api/users/${username}/role`, { role }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return NextResponse.json({ message: 'User role updated successfully' }, { status: response.status });
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    return NextResponse.json({ error: 'Error updating user role' }, { status: error.response?.status || 500 });
   }
 }

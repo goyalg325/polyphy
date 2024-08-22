@@ -34,7 +34,7 @@ export default function ManageUsers({ className }) {
     const newRole = currentRole === 'Admin' ? 'Editor' : 'Admin';
 
     try {
-      const response = await axios.put('/api/update-userRole', { username, role: newRole });
+      const response = await axios.put('/api/manage-users', { username, role: newRole });
       if (response.data.status === 200) {
         // Update the user's role in the local state
         setUsers(users.map(user =>

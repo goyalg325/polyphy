@@ -1,28 +1,20 @@
+// Next.js API route (api/update-userRole/route.js)
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
 export async function PUT(req) {
   try {
-    // Extract the username and role from the request body
     const { username, role } = await req.json();
 
-    // Validate input
     if (!username || !role) {
-      return NextResponse.json(
-        { error: 'Username and role are required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Username and role are required' }, { status: 400 });
     }
 
-    // Forward the request to the Express backend
     const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/update-userRole`, { username, role });
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     console.error('Error updating user role:', error);
-    return NextResponse.json(
-      { error: 'Failed to update user role' },
-      { status: error.response?.status || 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update user role' }, { status: error.response?.status || 500 });
   }
 }
