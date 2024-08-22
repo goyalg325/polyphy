@@ -31,7 +31,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         const categories = categoriesResponse.data;
     
         const pagesResponse = await axios.get(`/api/page-by-category`);
-        const pages = pagesResponse.data;
+        const pages = pagesResponse.data.data;
         console.log("Pages:", pages);
     
         const categorizedPages = categories.reduce((acc, category) => {

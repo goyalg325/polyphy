@@ -12,7 +12,6 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import CreateUser from '@/components/CreateUser';
 import ManageUsers from '@/components/ManageUsers';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import categories from '@/categories'
 import CreateCategory from '@/components/CreateCategory';
 import ChangePageCategory from '@/components/ChangePageCategory';
 import DeleteCategory from '@/components/DeleteCategory';
@@ -36,6 +35,22 @@ const AdminPanel = () => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [showCategoryManagement, setShowCategoryManagement] = useState(false);
   const [categoryManagementOption, setCategoryManagementOption] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Fetch categories when the component mounts
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/api/categories');
+        setCategories(response.data);  // Ensure this matches the data structure from the API
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        setError('Failed to fetch categories.');
+      }
+    };
+
+    fetchCategories();
+  }, []);
  
   useEffect(() => {
     const fetchUser = async () => {
