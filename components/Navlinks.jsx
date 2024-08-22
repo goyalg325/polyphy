@@ -27,11 +27,14 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   useEffect(() => {
     const fetchCategoriesAndPages = async () => {
       try {
+        const pagesResponse = await axios.get(`/api/pagesByCategory`);
+        const pages = pagesResponse.data.data;
+
+        
         const categoriesResponse = await axios.get("/api/categories");
         const categories = categoriesResponse.data;
 
-        const pagesResponse = await axios.get(`/api/pagesByCategory`);
-        const pages = pagesResponse.data.data;
+      
 
         const categorizedPages = categories.reduce((acc, category) => {
           acc[category] = pages.filter((page) => page.category === category);
