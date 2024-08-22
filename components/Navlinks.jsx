@@ -1,20 +1,20 @@
-import React from "react";
-import { Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Stack,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 import { useMediaQuery } from "@mui/material";
+import axios from "axios";
 
-const Navlinks = ({ dir, sp, categories, pagesByCategory, setOpen }) => {
+const Navlinks = ({ dir, sp, setOpen }) => {
   const mobile = useMediaQuery("(max-width:768px)");
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [categorizedPages, setCategorizedPages] = React.useState({});
-
-  React.useEffect(() => {
-    const filterPages = categories.reduce((acc, category) => {
-      acc[category] = pagesByCategory[category] || [];
-      return acc;
-    }, {});
-
-    setCategorizedPages(filterPages);
-  }, [categories, pagesByCategory]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [categoriesState, setCategoriesState] = useState({});
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -24,12 +24,31 @@ const Navlinks = ({ dir, sp, categories, pagesByCategory, setOpen }) => {
     setOpenDialog(false);
   };
 
+  useEffect(() => {
+    const fetchCategoriesAndPages = async () => {
+      try {
+        const categoriesResponse = await axios.get("/api/categories");
+        const categories = categoriesResponse.data;
+
+        const pagesResponse = await axios.get(`/api/page-by-category`);
+        const pages = pagesResponse.data.data;
+
+        const categorizedPages = categories.reduce((acc, category) => {
+          acc[category] = pages.filter((page) => page.category === category);
+          return acc;
+        }, {});
+
+        setCategoriesState(categorizedPages);
+      } catch (error) {
+        console.error("Error fetching categories and pages:", error);
+      }
+    };
+
+    fetchCategoriesAndPages();
+  }, []);
+
   return (
-    <Stack
-      direction={dir}
-      spacing={sp}
-      alignItems={!mobile ? "center" : "left"}
-    >
+    <Stack direction={dir} spacing={sp} alignItems={!mobile ? "center" : "flex-start"}>
       <li>
         <a className="navLinksMain" href={`/`}>
           Home
@@ -51,16 +70,16 @@ const Navlinks = ({ dir, sp, categories, pagesByCategory, setOpen }) => {
         </a>
       </li>
 
-      {categories.map((category) => (
+      {Object.keys(categoriesState).map((category) => (
         <li className="dropdown-wrapper" key={category}>
           <p className="navLinksMain">{category}</p>
           <ul className="dropdown">
-            {categorizedPages[category]?.map((page) => (
+            {categoriesState[category].map((page) => (
               <li key={page.title} className="w-full">
                 <a
                   className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"
                   href={`/${page.title}`}
-                  onClick={() => setOpen && setOpen(false)}
+                  onClick={() => setOpen && setOpen(false)} // Close drawer on mobile when link is clicked
                 >
                   {page.title}
                 </a>
@@ -102,6 +121,7 @@ const Navlinks = ({ dir, sp, categories, pagesByCategory, setOpen }) => {
         </ul>
       </li>
 
+      {/* New Admin Button */}
       <li>
         <a className="navLinksMain" href={`/admin`}>
           Admin
