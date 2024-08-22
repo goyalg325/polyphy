@@ -37,7 +37,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchPagesByCategory = async () => {
       try {
-        const response = await axios.get("/api/page-by-category");
+        const response = await axios.get(`/api/page-by-category?timestamp=${new Date().getTime()}`);
         console.log("Fetched pages by category:", response.data.data);
         setPagesByCategory(response.data.data);
       } catch (error) {
