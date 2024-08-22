@@ -72,11 +72,11 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         </a>
       </li>
 
-      {Object.keys(categoriesState).map((category) => (
+      {Object.keys(categorizedPages).map((category) => (
         <li className="dropdown-wrapper" key={category}>
           <p className="navLinksMain">{category}</p>
           <ul className="dropdown">
-            {categoriesState[category].map((page) => (
+            {CategorizedPages[category].map((page) => (
               <li key={page.title} className="w-full">
                 <a
                   className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"

@@ -16,7 +16,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [categories, setCategories] = useState([]);
   const [pagesByCategory, setPagesByCategory] = useState({});
-
+  const [categorizedPages,setCategorizedPages] = useState({});
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
@@ -51,7 +51,13 @@ useEffect(() => {
   fetchPagesByCategory() ;
  },[])
 
- 
+ const filterPages = categories.reduce((acc, category) => {
+  acc[category] = pagesByCategory.filter((page) => page.category === category);
+  console.log(`Pages for category ${category}:`, acc[category]);
+  return acc;
+}, {});
+
+setCategorizedPages(filterPages); 
 
   return (
     <Stack
@@ -81,7 +87,7 @@ useEffect(() => {
         </a>
       </li>
 
-      {categories.map((category) => (
+      {/* {categories.map((category) => (
         <li className="dropdown-wrapper" key={category}>
           <p className="navLinksMain">{category}</p>
           <ul className="dropdown">
@@ -95,7 +101,22 @@ useEffect(() => {
                   {page.title}
                 </a>
               </li>
-            ))}
+            ))} */}
+                 {Object.keys(categorizedPages).map((category) => (
+        <li className="dropdown-wrapper" key={category}>
+          <p className="navLinksMain">{category}</p>
+          <ul className="dropdown">
+            {CategorizedPages[category].map((page) => (
+              <li key={page.title} className="w-full">
+                <a
+                  className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"
+                  href={`/${page.title}`}
+                  onClick={() => setOpen && setOpen(false)} // Close drawer on mobile when link is clicked
+                >
+                  {page.title}
+                </a>
+              </li>
+            ))} 
           </ul>
         </li>
       ))}
