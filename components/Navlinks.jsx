@@ -33,7 +33,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
 
         // Fetch pages by category from the API
         const pagesResponse = await axios.get("/api/page-by-category");
-        console.log(`ye have api response ${pagesResponse.data}`)
+        // console.log(`ye have api response ${pagesResponse.data}`)
         const pages = pagesResponse.data.data;
 
         // Dynamically create categorized pages
