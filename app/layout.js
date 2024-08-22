@@ -36,7 +36,8 @@ export default function RootLayout({ children }) {
           headers: {
             'Content-Type': 'application/json',
           },
-        });;
+        });
+console.log(`ye hai tera response directly from backend ${response}`) ;
         setPagesByCategory(response.data);
       } catch (error) {
         console.error("Error fetching pages by category:", error);
