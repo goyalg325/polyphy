@@ -32,7 +32,11 @@ export default function RootLayout({ children }) {
 
     const fetchPagesByCategory = async () => {
       try {
-        const response = await axios.get("/api/page-by-category");
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pagesByCategory`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });;
         setPagesByCategory(response.data.data);
       } catch (error) {
         console.error("Error fetching pages by category:", error);
