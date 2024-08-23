@@ -109,6 +109,7 @@ const AdminPanel = () => {
           acc[category] = pages.filter((page) => page.category === category);
           return acc;
         }, {});
+        console.log("this is filtered pages",filterPages) ;
 
         setCategorizedPages(filterPages);
       } catch (error) {
