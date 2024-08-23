@@ -9,6 +9,15 @@ import SectionBreak from './CustomSectionBreak'; // Import the custom blot
 Quill.register('modules/blotFormatter', BlotFormatter);
 Quill.register('modules/imageDrop', ImageDrop);
 
+// CSS to enforce image margins
+const customImageStyle = `
+  .ql-editor img {
+    margin-top: 5px !important;
+    margin-left : 25px !important;
+    margin-right : 25px !important ;
+  }
+`;
+
 const QuillEditor = ({ value, onChange }) => {
   const quillRef = useRef(null);
 
@@ -27,6 +36,15 @@ const QuillEditor = ({ value, onChange }) => {
           editor.setSelection(range.index + 1);
         }
       });
+        // Inject custom CSS
+        const style = document.createElement('style');
+        style.innerHTML = customImageStyle;
+        document.head.appendChild(style);
+  
+        // Cleanup function to remove the style when component unmounts
+        return () => {
+          document.head.removeChild(style);
+        };
     }
   }, []);
 
