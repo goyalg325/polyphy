@@ -36,6 +36,9 @@ const AdminPanel = () => {
   const [showCategoryManagement, setShowCategoryManagement] = useState(false);
   const [categoryManagementOption, setCategoryManagementOption] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [categorizedPages,setCategorizedPages] = useState({})
+
+
 
   useEffect(() => {
     // Fetch categories when the component mounts
@@ -92,6 +95,29 @@ const AdminPanel = () => {
       console.error('Failed to fetch pages:', error);
     }
   };
+
+  useEffect(() => {
+    const fetchCategorizedPages = async () => {
+      try {
+        const pagesResponse = await axios.get(`/api/pagesByCategory`);
+        const pages = pagesResponse.data.data;
+      
+
+      
+
+        const filterPages = categories.reduce((acc, category) => {
+          acc[category] = pages.filter((page) => page.category === category);
+          return acc;
+        }, {});
+
+        setCategorizedPages(filterPages);
+      } catch (error) {
+        console.error("Error fetching categories and pages:", error);
+      }
+    };
+
+    fetchCategorizedPages();
+  }, []);
 
   if (loading) {
     return <LoadingSpinner/>;
