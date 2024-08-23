@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 0;
 export async function GET(request) {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pagesByCategory`, {
