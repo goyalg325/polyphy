@@ -1,9 +1,17 @@
-// Page component
 'use client';
 import React, { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
 import '@/styles/section.css';
 import "react-quill/dist/quill.core.css";
+
+// CSS to enforce image margins
+const customImageStyle = `
+  .ql-editor img {
+    margin-top: 5px !important;
+    margin-left: 25px !important;
+    margin-right: 25px !important;
+  }
+`;
 
 const Page = ({ params }) => {
   const { route } = params;
@@ -23,6 +31,16 @@ const Page = ({ params }) => {
     };
 
     fetchPageData();
+
+    // Add the custom style to the document
+    const style = document.createElement('style');
+    style.innerHTML = customImageStyle;
+    document.head.appendChild(style);
+
+    // Cleanup function
+    return () => {
+      document.head.removeChild(style);
+    };
   }, [route]);
 
   if (!pageData) {
@@ -41,7 +59,6 @@ const Page = ({ params }) => {
       </div>
     );
   });
-  
 
   return (
     // here adding design that should be evenly applied to complete page in outer div /*make sure to remove it*/

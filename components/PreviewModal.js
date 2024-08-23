@@ -1,11 +1,32 @@
 // components/PreviewModal.js
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import parse from 'html-react-parser';
 import '@/styles/section.css';
 import "react-quill/dist/quill.core.css";
 
-const PreviewModal = ({ title, content}) => {
+// CSS to enforce image margins
+const customImageStyle = `
+  .ql-editor img {
+    margin-top: 5px !important;
+    margin-left: 25px !important;
+    margin-right: 25px !important;
+  }
+`;
+
+const PreviewModal = ({ title, content }) => {
+  useEffect(() => {
+    // Add the custom style to the document
+    const style = document.createElement('style');
+    style.innerHTML = customImageStyle;
+    document.head.appendChild(style);
+
+    // Cleanup function
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const sections = content.split('<hr>').map((sectionContent, index) => {
     const sectionIndex = (index % 3) + 1;
     const sectionKey = `section-${index}-${sectionIndex}`;
