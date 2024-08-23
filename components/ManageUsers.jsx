@@ -70,7 +70,7 @@ export default function ManageUsers({ className }) {
               </div>
               <button
                 onClick={() => handleUpdateRole(user.username, user.role)}
-                className=" lg:mx-2 mt-4 lg:mt-0 focus:outline-none bg-black hover:bg-gray-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-38 text-sm h-10 rounded-md"
+                className=" lg:mx-2 mt-4 lg:mt-0 focus:outline-none bg-black hover:bg-gray-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
               >
                 Change to {user.role === 'Admin' ? 'Editor' : 'Admin'}
               </button>
