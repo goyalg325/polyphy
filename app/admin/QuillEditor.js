@@ -13,8 +13,19 @@ Quill.register('modules/imageDrop', ImageDrop);
 const customImageStyle = `
   .ql-editor img {
     margin-top: 5px !important;
-    margin-left : 25px !important;
-    margin-right : 25px !important ;
+    margin-left: 25px !important;
+    margin-right: 25px !important;
+  }
+
+ 
+  @media (max-width: 768px) {
+    .ql-editor img {
+      display: block;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      width: 100% !important;
+      height: auto !important;
+    }
   }
 `;
 
