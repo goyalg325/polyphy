@@ -95,14 +95,14 @@ export default function ManageUsers({ className }) {
               </div>
               <button
                 onClick={user.username !== curruser?.username ? () => handleUpdateRole(user.username, user.role) : null}
-                className={`lg:mx-2 mt-4 lg:mt-0 focus:outline-none w-full px-3 lg:w-36 text-sm h-10 rounded-md ${user.username === curruser?.username ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-gray-800'} focus:ring-1 focus:ring-rose-300`}
+                className={`lg:mx-2 mt-4 lg:mt-0 focus:outline-none w-full px-3 lg:w-36 text-sm h-10 rounded-md ${user.username === curruser?.username ? 'bg-teal-900 text-teal-900 cursor-default' : 'bg-black hover:bg-gray-800'} focus:ring-1 focus:ring-rose-300`}
                 disabled={user.username === curruser?.username}
               >
                 Change to {user.role === 'Admin' ? 'Editor' : 'Admin'}
               </button>
               <button
                 onClick={user.username !== curruser?.username ? () => deleteUser(user.username) : null}
-                className={`mt-4 lg:mt-0 focus:outline-none w-full px-3 lg:w-36 text-sm h-10 rounded-md ${user.username === curruser?.username ? 'bg-gray-500 cursor-not-allowed' : 'bg-rose-600 hover:bg-rose-800'} focus:ring-1 focus:ring-rose-300`}
+                className={`mt-4 lg:mt-0 focus:outline-none w-full px-3 lg:w-36 text-sm h-10 rounded-md ${user.username === curruser?.username ? 'bg-teal-900 text-teal-900 cursor-default' : 'bg-rose-600 hover:bg-rose-800'} focus:ring-1 focus:ring-rose-300`}
                 disabled={user.username === curruser?.username}
               >
                 Delete
