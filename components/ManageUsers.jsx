@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export default function ManageUsers({ className }) {
   const [users, setUsers] = useState([]);
+  const [curruser, setCurrUser] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,6 +21,33 @@ export default function ManageUsers({ className }) {
 
     fetchUsers();
   }, []);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const cookies = parseCookies();
+        let token = cookies.token || localStorage.getItem('token');
+
+        if (!token) {
+      
+          return;
+        }
+
+        const response = await axios.get('/api/user', {
+          headers: { Authorization: `${token}` },
+        });
+
+        setCurrUser(response.data);
+    
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+        destroyCookie(null, 'token');
+        localStorage.removeItem('token');
+       
+      }
+    };
+
+    fetchUser();
+  },[]);
 
   async function deleteUser(username) {
     try {
@@ -59,12 +87,12 @@ export default function ManageUsers({ className }) {
         <ul className="space-y-4">
           {users.map(user => (
             <li
-              key={user.username}
+              key={user.username != curruser?.username ? user.username : 'You'}
               className="p-4 border rounded-lg shadow-sm bg-teal-600 flex flex-col lg:flex-row lg:justify-between lg:items-center"
             >
               <div className="flex-1 flex items-center space-x-2">
-                <span className="truncate max-w-xs text-lg font-medium" title={user.username}>
-                  {user.username}
+                <span className="truncate max-w-xs text-lg font-medium" title={user.username != curruser?.username ? user.username : 'You'}>
+                {user.username != curruser?.username ? user.username : 'You'}
                 </span>
                 <span className="text-sm text-white">({user.role})</span>
               </div>
