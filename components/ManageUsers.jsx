@@ -22,6 +22,7 @@ export default function ManageUsers({ className }) {
 
     fetchUsers();
   }, []);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -29,7 +30,6 @@ export default function ManageUsers({ className }) {
         let token = cookies.token || localStorage.getItem('token');
 
         if (!token) {
-      
           return;
         }
 
@@ -43,12 +43,11 @@ export default function ManageUsers({ className }) {
         console.error('Failed to fetch user:', error);
         destroyCookie(null, 'token');
         localStorage.removeItem('token');
-       
       }
     };
 
     fetchUser();
-  },[]);
+  }, []);
 
   async function deleteUser(username) {
     try {
@@ -88,24 +87,26 @@ export default function ManageUsers({ className }) {
         <ul className="space-y-4">
           {users.map(user => (
             <li
-              key={user.username != curruser?.username ? user.username : 'You'}
-              className="p-4 border rounded-lg shadow-sm bg-teal-600 flex flex-col lg:flex-row lg:justify-between lg:items-center"
+              key={user.username !== curruser?.username ? user.username : 'You'}
+              className={`p-4 border rounded-lg shadow-sm ${user.username === curruser?.username ? 'bg-teal-900' : 'bg-teal-600'} flex flex-col lg:flex-row lg:justify-between lg:items-center`}
             >
               <div className="flex-1 flex items-center space-x-2">
-                <span className="truncate max-w-xs text-lg font-medium" title={user.username != curruser?.username ? user.username : 'You'}>
-                {user.username != curruser?.username ? user.username : 'You'}
+                <span className="truncate max-w-xs text-lg font-medium" title={user.username !== curruser?.username ? user.username : 'You'}>
+                  {user.username !== curruser?.username ? user.username : 'You'}
                 </span>
                 <span className="text-sm text-white">({user.role})</span>
               </div>
               <button
-                onClick={() => handleUpdateRole(user.username, user.role)}
-                className=" lg:mx-2 mt-4 lg:mt-0 focus:outline-none bg-black hover:bg-gray-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
+                onClick={user.username !== curruser?.username ? () => handleUpdateRole(user.username, user.role) : null}
+                className="lg:mx-2 mt-4 lg:mt-0 focus:outline-none bg-black hover:bg-gray-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
+                disabled={user.username === curruser?.username}
               >
                 Change to {user.role === 'Admin' ? 'Editor' : 'Admin'}
               </button>
               <button
-                onClick={() => deleteUser(user.username)}
+                onClick={user.username !== curruser?.username ? () => deleteUser(user.username) : null}
                 className="mt-4 lg:mt-0 focus:outline-none bg-rose-600 hover:bg-rose-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
+                disabled={user.username === curruser?.username}
               >
                 Delete
               </button>
