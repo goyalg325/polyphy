@@ -38,7 +38,6 @@ export default function ManageUsers({ className }) {
         });
 
         setCurrUser(response.data);
-    
       } catch (error) {
         console.error('Failed to fetch user:', error);
         destroyCookie(null, 'token');
@@ -52,7 +51,6 @@ export default function ManageUsers({ className }) {
   async function deleteUser(username) {
     try {
       await axios.delete('/api/manage-users', { data: { username } });
-      // Update the local state by removing the deleted user
       setUsers(users.filter(user => user.username !== username));
     } catch (err) {
       setError('Error deleting user');
@@ -65,7 +63,6 @@ export default function ManageUsers({ className }) {
     try {
       const response = await axios.put('/api/manage-users', { username, role: newRole });
       if (response.status === 200) {
-        // Update the user's role in the local state
         setUsers(users.map(user =>
           user.username === username ? { ...user, role: newRole } : user
         ));
@@ -98,14 +95,14 @@ export default function ManageUsers({ className }) {
               </div>
               <button
                 onClick={user.username !== curruser?.username ? () => handleUpdateRole(user.username, user.role) : null}
-                className="lg:mx-2 mt-4 lg:mt-0 focus:outline-none bg-black hover:bg-gray-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
+                className={`lg:mx-2 mt-4 lg:mt-0 focus:outline-none w-full px-3 lg:w-36 text-sm h-10 rounded-md ${user.username === curruser?.username ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-gray-800'} focus:ring-1 focus:ring-rose-300`}
                 disabled={user.username === curruser?.username}
               >
                 Change to {user.role === 'Admin' ? 'Editor' : 'Admin'}
               </button>
               <button
                 onClick={user.username !== curruser?.username ? () => deleteUser(user.username) : null}
-                className="mt-4 lg:mt-0 focus:outline-none bg-rose-600 hover:bg-rose-800 focus:ring-1 focus:ring-rose-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md"
+                className={`mt-4 lg:mt-0 focus:outline-none w-full px-3 lg:w-36 text-sm h-10 rounded-md ${user.username === curruser?.username ? 'bg-gray-500 cursor-not-allowed' : 'bg-rose-600 hover:bg-rose-800'} focus:ring-1 focus:ring-rose-300`}
                 disabled={user.username === curruser?.username}
               >
                 Delete
