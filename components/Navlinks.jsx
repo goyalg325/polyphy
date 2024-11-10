@@ -15,6 +15,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
   const mobile = useMediaQuery("(max-width:768px)");
   const [openDialog, setOpenDialog] = useState(false);
   const [categoriesState, setCategoriesState] = useState({});
+  const [directPages, setDirectPages] = useState([]);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -29,13 +30,14 @@ const Navlinks = ({ dir, sp, setOpen }) => {
       try {
         const pagesResponse = await axios.get(`/api/pagesByCategory`);
         const pages = pagesResponse.data.data;
-
-
         const categoriesResponse = await axios.get("/api/categories");
         const categories = categoriesResponse.data;
 
-      
+        // Find direct pages where title equals category
+        const directPages = pages.filter(page => page.category && page.title && page.category === page.title);
+        setDirectPages(directPages);
 
+        // Original categorization logic remains unchanged
         const categorizedPages = categories.reduce((acc, category) => {
           acc[category] = pages.filter((page) => page.category === category);
           return acc;
@@ -73,6 +75,15 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         </a>
       </li>
 
+      {/* Direct pages where title equals category */}
+      {directPages.map((page) => (
+        <li key={page.title}>
+          <a className="navLinksMain" href={`/${page.title}`}>
+            {page.title}
+          </a>
+        </li>
+      ))}
+
       {Object.keys(categoriesState).map((category) => (
         <li className="dropdown-wrapper" key={category}>
           <p className="navLinksMain">{category}</p>
@@ -82,7 +93,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
                 <a
                   className="block text-ellipsis whitespace-nowrap overflow-hidden max-w-[150px]"
                   href={`/${page.title}`}
-                  onClick={() => setOpen && setOpen(false)} // Close drawer on mobile when link is clicked
+                  onClick={() => setOpen && setOpen(false)}
                 >
                   {page.title}
                 </a>
@@ -124,7 +135,6 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         </ul>
       </li>
 
-      {/* New Admin Button */}
       <li>
         <a className="navLinksMain" href={`/admin`}>
           Admin

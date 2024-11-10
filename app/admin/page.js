@@ -23,7 +23,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [title, setTitle] = useState('');
-  const [category,setCategory] = useState('');
+  const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
   const [pages, setPages] = useState([]);
   const [editMode, setEditMode] = useState(false);
@@ -36,16 +36,15 @@ const AdminPanel = () => {
   const [showCategoryManagement, setShowCategoryManagement] = useState(false);
   const [categoryManagementOption, setCategoryManagementOption] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [categorizedPages,setCategorizedPages] = useState({})
-
-
+  const [categorizedPages, setCategorizedPages] = useState({});
+  const [pageCreationType, setPageCreationType] = useState('');
+  const [isPageTypeDropdownOpen, setIsPageTypeDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch categories when the component mounts
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/categories');
-        setCategories(response.data);  // Ensure this matches the data structure from the API
+        setCategories(response.data);
       } catch (err) {
         console.error('Error fetching categories:', err);
         setError('Failed to fetch categories.');
@@ -87,7 +86,7 @@ const AdminPanel = () => {
     fetchPages();
   }, []);
 
-   const fetchPages = async () => {
+  const fetchPages = async () => {
     try {
       const response = await axios.get('/api/pages');
       setPages(response.data.data);
@@ -101,16 +100,10 @@ const AdminPanel = () => {
       try {
         const pagesResponse = await axios.get(`/api/pagesByCategory`);
         const pages = pagesResponse.data.data;
-      
-
-      
-
         const filterPages = categories.reduce((acc, category) => {
           acc[category] = pages.filter((page) => page.category === category);
           return acc;
         }, {});
-        console.log("this is filtered pages",filterPages) ;
-
         setCategorizedPages(filterPages);
       } catch (error) {
         console.error("Error fetching categories and pages:", error);
@@ -119,6 +112,37 @@ const AdminPanel = () => {
 
     fetchCategorizedPages();
   }, []);
+
+  const isTitleDisabled = () => {
+    if (editMode) {
+      return title === category || !pageCreationType;
+    }
+    return !pageCreationType;
+  };
+
+  const isCategoryDisabled = () => {
+    if (editMode) {
+      return title === category;
+    }
+    return !pageCreationType || pageCreationType === 'direct';
+  };
+
+  const isPageTypeDropdownDisabled = () => {
+    return editMode && (title === category || title !== category);
+  };
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value.replace(/\s+/g, '');
+    setTitle(newTitle);
+    
+    if (pageCreationType === 'direct') {
+      setCategory(newTitle);
+    }
+  
+    if (e.target.value !== newTitle) {
+      alert('Spaces are not allowed in the title field');
+    }
+  };
 
   if (loading) {
     return <LoadingSpinner/>;
@@ -177,7 +201,8 @@ const AdminPanel = () => {
       alert('Failed to delete page. Please try again.');
     }
   };
- const handleLogout = async () => {
+
+  const handleLogout = async () => {
     try {
       await axios.post('/api/logout', null, { withCredentials: true });
       destroyCookie(null, 'token');
@@ -192,12 +217,8 @@ const AdminPanel = () => {
   const handleEditPage = async (title) => {
     try {
       const response = await axios.get(`/api/pages/${title}`);
-      
-      // Ensure that the response data is properly structured
       if (response.data.success) {
-        const page = response.data.data; // Adjust this based on the actual response structure
-        
-        // Set the state with the fetched page data
+        const page = response.data.data;
         setTitle(page.title);
         setCategory(page.category);
         setContent(page.content);
@@ -211,6 +232,7 @@ const AdminPanel = () => {
       alert('An error occurred while fetching the page. Please try again.');
     }
   };
+
   const handlePreviewClick = () => {
     setIsPreviewModalOpen(true);
   };
@@ -219,61 +241,97 @@ const AdminPanel = () => {
     setIsPreviewModalOpen(false);
   };
 
-  const handleTitleChange = (e) => {
-    const newTitle = e.target.value.replace(/\s+/g, '');
-    setTitle(newTitle);
-  
-    if (e.target.value !== newTitle) {
-      alert('Spaces are not allowed in the title field');
-    }
-  };
-  
   return (
     <div className="flex flex-col items-center justify-center max-w-full w-screen">
       <nav className={`w-full shadow-md z-50`}>
         <div className="flex flex-col md:flex-row justify-between w-full p-3">
           <div className="flex flex-col md:flex-row md:w-2/3">
-            <div className="m-auto my-2 md:m-2 w-full md:w-auto">
-            <input
-  type="text"
-  id="Title"
-  className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-  placeholder="Title"
-  value={title}
-  onChange={handleTitleChange} 
-  required
-/>
-
-            </div>
             <div className="m-auto my-2 md:m-2 w-full md:w-auto relative">
-  <label className="hidden">Category</label>
-  <div
-    className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
-    onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
-  >
-    {category || "Select a category"}
-    <span className={`ml-2 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`}>
-      ▼
-    </span>
-  </div>
-  {isCategoryDropdownOpen && (
-          <ul className="absolute z-10 bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            {categories.map((cat, index) => (
-              <li
-                key={index}
-                className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
-                onClick={() => {
-                  setCategory(cat);
-                  setIsCategoryDropdownOpen(false);
-                }}
+              <div
+                className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer ${
+                  isPageTypeDropdownDisabled() ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                onClick={() => !isPageTypeDropdownDisabled() && setIsPageTypeDropdownOpen(!isPageTypeDropdownOpen)}
               >
-                {cat}
-              </li>
-            ))}
-          </ul>
-        )}
-</div>
-    </div>
+                {pageCreationType === 'direct' 
+                  ? 'Create Direct Page' 
+                  : pageCreationType === 'category' 
+                    ? 'Create in Category'
+                    : 'Select Page Type'}
+                <span className={`ml-2 transition-transform ${isPageTypeDropdownOpen ? 'rotate-180' : ''}`}>
+                  ▼
+                </span>
+              </div>
+              {isPageTypeDropdownOpen && !isPageTypeDropdownDisabled() && (
+                <ul className="absolute z-10 bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <li
+                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
+                    onClick={() => {
+                      setPageCreationType('direct');
+                      setIsPageTypeDropdownOpen(false);
+                    }}
+                  >
+                    Create Direct Page
+                  </li>
+                  <li
+                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
+                    onClick={() => {
+                      setPageCreationType('category');
+                      setIsPageTypeDropdownOpen(false);
+                    }}
+                  >
+                    Create in Category
+                  </li>
+                </ul>
+              )}
+            </div>
+
+            <div className="m-auto my-2 md:m-2 w-full md:w-auto">
+              <input
+                type="text"
+                id="Title"
+                className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                  isTitleDisabled() ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                placeholder="Title"
+                value={title}
+                onChange={handleTitleChange}
+                disabled={isTitleDisabled()}
+                required
+              />
+            </div>
+
+            <div className="m-auto my-2 md:m-2 w-full md:w-auto relative">
+              <div
+                className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                  isCategoryDisabled() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                }`}
+                onClick={() => !isCategoryDisabled() && setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+              >
+                {category || "Select a category"}
+                <span className={`ml-2 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`}>
+                  ▼
+                </span>
+              </div>
+              {isCategoryDropdownOpen && !isCategoryDisabled() && (
+                <ul className="absolute z-10 bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  {categories.map((cat, index) => (
+                    <li
+                      key={index}
+                      className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
+                      onClick={() => {
+                        setCategory(cat);
+                        setIsCategoryDropdownOpen(false);
+                      }}
+                    >
+                      {cat}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
           <div className="md:hidden m-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
