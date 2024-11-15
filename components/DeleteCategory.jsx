@@ -23,9 +23,8 @@ const DeleteCategory = () => {
     if (window.confirm('Are you sure you want to delete this category? All pages within this category will also be deleted.')) {
       try {
         // Fetch pages in the selected category
-        const response = await axios.get('/api/page-by-category');
+        const response = await axios.get('/api/pagesByCategory');
         const pages = response.data.data;
-
         if (Array.isArray(pages)) {
           const pagesToDelete = pages.filter(page => page.category === selectedCategory);
 
