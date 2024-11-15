@@ -41,12 +41,21 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, {
-      username: username.trim(),
-      password,
-      password_confirmation,
-      role
-    });
+    // Add authorization header to the axios request
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, 
+      {
+        username: username.trim(),
+        password,
+        password_confirmation,
+        role
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}` // Forward the token to the backend
+        }
+      }
+    );
 
     return NextResponse.json({ message: 'User created successfully' }, { status: 201 });
   } catch (error) {
