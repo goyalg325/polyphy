@@ -466,9 +466,11 @@ const AdminPanel = () => {
       <form onSubmit={handleSubmit} className="max-w-full w-screen">
 
         <PageManager pages={pages} onEditPage={handleEditPage} onDeletePage={handleDelete} isVisible={showPageManager} />
-        <div >
+        <div>
           <label className="hidden">Content</label>
-          <QuillEditor value={content} onChange={setContent} />
+          <div style={{ width: "92%", margin: "0 auto" }}>
+            <QuillEditor value={content} onChange={setContent} />
+          </div>
         </div>
         <div className='flex-col md:flex-row justify-between w-full flex items-center p-2 '>
           <div className='flex-col md:flex-row  w-full flex items-center p-2 '>
