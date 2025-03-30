@@ -13,14 +13,71 @@ const customImageStyle = `
     margin-right: 25px !important;
   }
 
- 
+  /* Center alignment fix */
+  img[data-align="center"] {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Improved mobile handling */
   @media (max-width: 768px) {
-    .ql-editor img {
-      display: block;
-      margin-left: auto !important;
-      margin-right: auto !important;
+    /* Make content use full width */
+    .dynamic-route-wrapper, 
+    .preview-modal-content {
       width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 !important;
+    }
+    
+    /* Make sections use full width */
+    .section-1, 
+    .section-2, 
+    .section-3 {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 8px !important;
+      margin: 0 0 0.5em 0 !important;
+    }
+    
+    /* Override all image styles for mobile */
+    .ql-editor img,
+    img[data-align],
+    img[style*="float"],
+    .section-1 img,
+    .section-2 img,
+    .section-3 img {
+      float: none !important;
+      display: block !important;
+      margin: 5px auto !important;
+      max-width: 95% !important; /* Allow slight margin */
+      width: auto !important;
       height: auto !important;
+      object-fit: contain !important;
+    }
+    
+    /* Improve text spacing on mobile */
+    .ql-editor p,
+    .section-1 p,
+    .section-2 p, 
+    .section-3 p {
+      overflow-wrap: break-word !important;
+      word-wrap: break-word !important;
+      max-width: 100% !important;
+      margin: 0.5em 0 !important;
+      padding: 0 !important; /* Remove paragraph padding */
+    }
+    
+    /* Reduce spacing between sections */
+    .section-1,
+    .section-2,
+    .section-3 {
+      margin-bottom: 0.5em !important;
+    }
+    
+    /* Adjust section padding */
+    .ql-editor {
+      padding: 4px !important;
     }
   }
 `;
