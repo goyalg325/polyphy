@@ -21,9 +21,9 @@ export async function GET(request) {
 export async function POST(request) {
   try {
      const token = request.cookies.get('token')?.value || ''
-    const { title,  content, author, category } = await request.json();
+    const { title, content, author, category, isLink } = await request.json();
     const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pages`, {
-      title,  content, author, category
+      title, content, author, category, isLink
     }, {
       headers: {
         'Content-Type': 'application/json',

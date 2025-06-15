@@ -85,35 +85,88 @@ const customImageStyle = `
 const Page = ({ params }) => {
   const { route } = params;
   const [pageData, setPageData] = useState(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Set up for the custom style
+    const style = document.createElement('style');
+    style.innerHTML = customImageStyle;
+    document.head.appendChild(style);
+    
+    // Fetch data and handle redirects
     const fetchPageData = async () => {
       try {
         const response = await fetch(`/api/pages/${route}`);
         const data = await response.json();
+        
         if (data.success) {
+          // Handle external link redirect
+          if (data.data.isLink) {
+            setIsRedirecting(true);
+            const url = data.data.content;
+            
+            // Make sure the URL starts with http:// or https://
+            const fullUrl = url.startsWith('http://') || url.startsWith('https://') 
+              ? url 
+              : `https://${url}`;
+            
+            // Redirect after a very brief timeout
+            setTimeout(() => {
+              window.location.href = fullUrl;
+            }, 50);
+            return;
+          }
+          
+          // Only set page data if it's not a link
           setPageData(data.data);
+        } else {
+          // Handle unsuccessful responses
+          setError(data.message || 'Page not found');
         }
       } catch (error) {
         console.error('Failed to fetch page data:', error);
+        setError('An error occurred while loading this page');
       }
     };
 
     fetchPageData();
 
-    // Add the custom style to the document
-    const style = document.createElement('style');
-    style.innerHTML = customImageStyle;
-    document.head.appendChild(style);
-
     // Cleanup function
     return () => {
-      document.head.removeChild(style);
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
   }, [route]);
+  // Show error message if page doesn't exist or there was an error
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-black">
+        <svg className="w-16 h-16 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <div className="text-white text-xl mb-2">{error}</div>
+        <p className="text-gray-400 text-center max-w-md">
+          The page you're looking for might have been removed, renamed, or doesn't exist.
+        </p>
+        <a href="/" className="mt-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
+          Return to Home
+        </a>
+      </div>
+    );
+  }
 
-  if (!pageData) {
-    return <div>Loading...</div>;
+  // Show a single loading/redirecting screen for both cases
+  if (isRedirecting || !pageData) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-black">
+        <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin mb-4"></div>
+        <div className="text-white text-xl">
+          {isRedirecting ? "Opening external site..." : "Loading..."}
+        </div>
+      </div>
+    );
   }
 
   // Parse content with <hr> tags and dynamically assign section classes

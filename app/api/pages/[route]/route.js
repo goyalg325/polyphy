@@ -57,16 +57,14 @@ export async function DELETE(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
-    const { token, route } = getRequestDetails(request, params);
-
-    if (!route) {
+    const { token, route } = getRequestDetails(request, params);    if (!route) {
       return NextResponse.json({ success: false, message: 'Route is required' }, { status: 400 });
     }
 
-    const { content, author, category } = await request.json();
+    const { content, author, category, isLink } = await request.json();
 
     const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pages/${route}`, {
-      content, author, category
+      content, author, category, isLink
     }, {
       headers: {
         'Authorization': `${token}`,

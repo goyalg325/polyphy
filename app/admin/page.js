@@ -18,8 +18,7 @@ import DeleteCategory from '@/components/DeleteCategory';
 
 const QuillEditor = dynamic(() => import('./QuillEditor'), { ssr: false });
 
-const AdminPanel = () => {
-  const [user, setUser] = useState(null);
+const AdminPanel = () => {  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [title, setTitle] = useState('');
@@ -39,6 +38,7 @@ const AdminPanel = () => {
   const [categorizedPages, setCategorizedPages] = useState({});
   const [pageCreationType, setPageCreationType] = useState('');
   const [isPageTypeDropdownOpen, setIsPageTypeDropdownOpen] = useState(false);
+  const [isLink, setIsLink] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -151,7 +151,6 @@ const AdminPanel = () => {
   if (!user) {
     return <div>Not authorized. Redirecting...</div>;
   }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -160,8 +159,8 @@ const AdminPanel = () => {
       const url = editMode ? `/api/pages/${title}` : '/api/pages';
 
       const payload = editMode 
-      ? { content, author:user.username, category } 
-      : { title, content, author:user.username, category };
+      ? { content, author: user.username, category, isLink } 
+      : { title, content, author: user.username, category, isLink };
 
       const response = await axios[method](url, payload, {
             headers: {
@@ -212,9 +211,7 @@ const AdminPanel = () => {
       console.error('Error logging out:', error);
       alert('Failed to log out. Please try again.');
     }
-  };
-
-  const handleEditPage = async (title) => {
+  };  const handleEditPage = async (title) => {
     try {
       const response = await axios.get(`/api/pages/${title}`);
       if (response.data.success) {
@@ -222,6 +219,16 @@ const AdminPanel = () => {
         setTitle(page.title);
         setCategory(page.category);
         setContent(page.content);
+        
+        // Set isLink value from the page data
+        const pageIsLink = page.isLink || false;
+        setIsLink(pageIsLink);
+        
+        // If it's a link page, close any open preview
+        if (pageIsLink && isPreviewModalOpen) {
+          setIsPreviewModalOpen(false);
+        }
+        
         setEditMode(true);
       } else {
         console.error('Failed to fetch page for editing:', response.data.message);
@@ -232,8 +239,11 @@ const AdminPanel = () => {
       alert('An error occurred while fetching the page. Please try again.');
     }
   };
-
   const handlePreviewClick = () => {
+    // Don't allow preview for link pages
+    if (isLink) {
+      return;
+    }
     setIsPreviewModalOpen(true);
   };
 
@@ -463,21 +473,73 @@ const AdminPanel = () => {
       {categoryManagementOption === 'delete' && <DeleteCategory className="w-full" />}
 
 
-      <form onSubmit={handleSubmit} className="max-w-full w-screen">
+      <form onSubmit={handleSubmit} className="max-w-full w-screen">        <PageManager pages={pages} onEditPage={handleEditPage} onDeletePage={handleDelete} isVisible={showPageManager} />
+          {/* Link toggle checkbox */}        <div className="w-92% mx-auto my-4 bg-gray-800 p-3 rounded-lg border-l-4 border-blue-500">
+          <div className="flex items-center">            <input
+              type="checkbox"
+              id="isLink"
+              checked={isLink}
+              onChange={(e) => {
+                const isChecked = e.target.checked;
+                setIsLink(isChecked);
+                // If switching to link mode, close any open preview
+                if (isChecked && isPreviewModalOpen) {
+                  setIsPreviewModalOpen(false);
+                }
+              }}
+              className="mr-2 h-5 w-5 text-blue-600"
+            />
+            <label htmlFor="isLink" className="text-white font-medium">
+              External Link Page
+            </label>
+            {isLink && (
+              <span className="ml-3 px-2 py-1 bg-blue-600 text-white text-xs rounded-full">
+                REDIRECT MODE
+              </span>
+            )}
+          </div>
+          {isLink && (
+            <div className="mt-2 ml-7 p-3 bg-gray-700 rounded border-l-2 border-yellow-500">
+              <p className="text-yellow-400 text-sm font-medium">
+                ⚠️ This page will function as a redirect
+              </p>
+              <p className="text-gray-300 text-sm mt-1">
+                When users visit this page, they will be immediately redirected to the URL you specify below.
+                <br />No content will be displayed on your site.
+              </p>
+            </div>
+          )}
+        </div>
 
-        <PageManager pages={pages} onEditPage={handleEditPage} onDeletePage={handleDelete} isVisible={showPageManager} />
         <div>
-          <label className="hidden">Content</label>
-          <div style={{ width: "92%", margin: "0 auto" }}>
-            <QuillEditor value={content} onChange={setContent} />
+          <label className="hidden">Content</label>          <div style={{ width: "92%", margin: "0 auto" }}>            {isLink ? (
+              <input
+                type="url"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="https://example.com (full URL with https://)"
+                className="w-full p-3 bg-gray-700 border border-blue-500 rounded-md text-white"
+                required
+              />
+            ) : (
+              <QuillEditor value={content} onChange={setContent} />
+            )}
           </div>
         </div>
         <div className='flex-col md:flex-row justify-between w-full flex items-center p-2 '>
           <div className='flex-col md:flex-row  w-full flex items-center p-2 '>
-        <button type="submit" className='mx-0.5 my-0.5 focus:outline-none bg-green-600 hover:bg-green-700 focus:ring-1 focus:ring-green-300 w-full px-3  lg:w-36 text-sm h-10 rounded-md '>{editMode ? 'Update Page' : 'Create Page'}</button>
-        {editMode && <button  className='mx-0.5 my-0.5 focus:outline-none bg-amber-700 hover:bg-amber-900 focus:ring-1 focus:ring-amber-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md ' onClick={() => setEditMode(false)}>Cancel Edit</button>}
+        <button type="submit" className='mx-0.5 my-0.5 focus:outline-none bg-green-600 hover:bg-green-700 focus:ring-1 focus:ring-green-300 w-full px-3  lg:w-36 text-sm h-10 rounded-md '>{editMode ? 'Update Page' : 'Create Page'}</button>        {editMode && <button  className='mx-0.5 my-0.5 focus:outline-none bg-amber-700 hover:bg-amber-900 focus:ring-1 focus:ring-amber-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md ' onClick={() => setEditMode(false)}>Cancel Edit</button>}
         </div>
-       {!isPreviewModalOpen ? <button type="button"  className='focus:outline-none bg-pink-700 hover:bg-pink-900 focus:ring-1 focus:ring-pink-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md ' onClick={handlePreviewClick}>Preview</button> 
+       {!isPreviewModalOpen ? 
+          <button 
+            type="button" 
+            className={`focus:outline-none ${isLink ? 'bg-gray-500 cursor-not-allowed' : 'bg-pink-700 hover:bg-pink-900'} focus:ring-1 focus:ring-pink-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md`} 
+            onClick={handlePreviewClick}
+            disabled={isLink}
+            title={isLink ? "Preview not available for link pages" : "Preview page"}
+          >
+            Preview
+          </button> 
        :  <button type="button" onClick={handleClosePreview} className="focus:outline-none bg-indigo-700 hover:bg-indigo-900 focus:ring-1 focus:ring-indigo-300 w-full px-3 lg:w-36 text-sm h-10 rounded-md ">Close Preview</button>
      }
         </div>
