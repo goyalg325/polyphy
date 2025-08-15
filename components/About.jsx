@@ -54,7 +54,6 @@ const About = ({ data }) => {
         </p>
       )}
 
-      <ButtonSwipe link="/story">Know More {">"}</ButtonSwipe>
     </div>
   );
 };

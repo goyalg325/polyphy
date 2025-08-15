@@ -8,7 +8,6 @@ export default function Home() {
    <>
    <div className="Home">
    <Hero  />
-   <News/>
    <About />
    </div>
    </>

@@ -29,7 +29,6 @@ flex and flex-col: Makes the parent container a flexbox and arranges children in
        <div className="flex-1"> {/* flex-1: Makes the main content area grow to fill the available space. */}
     {children}
     </div>
-     <Footer/>
      </div>
      </ThemeProvider>
      </body>
