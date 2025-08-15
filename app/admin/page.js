@@ -40,6 +40,26 @@ const AdminPanel = () => {  const [user, setUser] = useState(null);
   const [isPageTypeDropdownOpen, setIsPageTypeDropdownOpen] = useState(false);
   const [isLink, setIsLink] = useState(false);
 
+  // Add beforeunload warning to prevent accidental data loss
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      // Check if user has any content that could be lost
+      if ((title && title.trim()) || (content && content.trim())) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved changes. Are you sure you want to leave this page?';
+        return e.returnValue;
+      }
+    };
+
+    // Add the event listener
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [title, content]); // Re-run when title or content changes
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
