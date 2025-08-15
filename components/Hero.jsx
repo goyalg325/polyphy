@@ -46,8 +46,8 @@ const Hero = ({ data }) => {
                   'slime mold'
                 </p>
               )}
-
-              <a href={process.env.NEXT_PUBLIC_URL + "#about"}>Get Started {">"}</a>
+{/* 
+              <a href={process.env.NEXT_PUBLIC_URL + "#about"}>Get Started {">"}</a> */}
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>

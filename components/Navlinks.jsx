@@ -54,7 +54,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
 
   return (
     <Stack direction={dir} spacing={sp} alignItems={!mobile ? "center" : "flex-start"}>
-      <li>
+      {/* <li>
         <a className="navLinksMain" href={`/`}>
           Home
         </a>
@@ -73,7 +73,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         >
           Documentation
         </a>
-      </li>
+      </li> */}
 
       {/* Direct pages where title equals category */}
       {directPages.map((page) => (
@@ -103,7 +103,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
         </li>
       ))}
 
-      <li className="dropdown-wrapper">
+      {/* <li className="dropdown-wrapper">
         <p className="navLinksMain">Community</p>
         <ul className="dropdown">
           <li>
@@ -133,7 +133,7 @@ const Navlinks = ({ dir, sp, setOpen }) => {
             </a>
           </li>
         </ul>
-      </li>
+      </li> */}
 
       <li>
         <a className="navLinksMain" href={`/admin`}>
